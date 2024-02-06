@@ -1,22 +1,21 @@
+use std::collections::HashMap;
+
+mod test;
+
+
 fn main() {
-    enum Message {
-        Hello { id: i32 },
-    }
-    
-    let msg = Message::Hello { id: 5 };
-    
-    match msg {
-        Message::Hello { id } if id == 5 => {
-            println!("Found an id in range 5: {}", id)
-        },
-        Message::Hello { id: id_variable @ 3..=7 } => {
-            println!("Found an id in range: {}", id_variable)
-        },
-        Message::Hello { id: 10..=12 } => {
-            println!("Found an id in another range")
-        },
-        Message::Hello { id } => {
-            println!("Found some other id: {}", id)
+    let mut map = HashMap::new();
+    let key = "a";
+    let value = get_default(&mut map, key);
+    println!("{key}:{value}");
+}
+
+fn get_default<'a>(map: &'a mut HashMap<String, i32>, key: &str) -> &'a mut i32 {
+    match map.get_mut(key) {
+        Some(value) => value,
+        None => {
+            map.insert(key.to_string().clone(), 0);
+            map.get_mut(key).unwrap()
         }
     }
 }
